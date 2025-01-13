@@ -6,7 +6,7 @@
 /*   By: jopires- <jopires-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 17:33:04 by jopires-          #+#    #+#             */
-/*   Updated: 2025/01/10 19:28:40 by jopires-         ###   ########.fr       */
+/*   Updated: 2025/01/13 19:20:30 by jopires-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,23 +20,24 @@ char	*ft_strjoin(char *s1, char *s2)
 
 	i = 0;
 	x = 0;
-	out = (char *)malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
+	out = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
 	if (!out)
 		return (NULL);
-	while (s1[i])
+	while (s1 && s1[i])
 	{
-		out[x++] = s1[i];
+		out[x + i] = s1[i];
 		i++;
 	}
-	if (ft_strlen(s1) > 1)
+	while (s2[x] && s2[x] != '\n')
+	{
+		out[i + x] = s2[x];
+		x++;
+	}
+	if (s2[x] == '\n')
+		out[i + x++] = '\n';
+	out[i + x] = '\0';
+	if (s1)
 		free(s1);
-	i = 0;
-	while (s2[i])
-	{
-		out[x++] = s2[i];
-		i++;
-	}
-	out[x] = '\0';
 	return (out);
 }
 
@@ -45,10 +46,10 @@ size_t	ft_strlen(const char *str)
 	size_t	idx;
 
 	idx = 0;
-	while (str[idx] != '\0')
-	{
+	while (str && str[idx] && str[idx] != '\n')
 		idx++;
-	}
+	if (str && str[idx] == '\n')
+		idx++;
 	return (idx);
 }
 

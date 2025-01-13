@@ -6,7 +6,7 @@
 /*   By: jopires- <jopires-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 17:33:02 by jopires-          #+#    #+#             */
-/*   Updated: 2025/01/10 19:25:56 by jopires-         ###   ########.fr       */
+/*   Updated: 2025/01/13 19:40:31 by jopires-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,16 @@
 char	*get_next_line(int fd)
 {
 	char		*str;
-	int			bytesread;
-	static char	buffer [BUFFER_SIZE +1];
+	static char	buffer[BUFFER_SIZE + 1];
+	int			i;
 
-	str = "";
+	i = 0;
+	str = NULL;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 	{
-		bytesread = read(fd, buffer, BUFFER_SIZE);
-		if (bytesread < 0)
-			return (NULL);
+		while (i <= BUFFER_SIZE)
+			buffer[i++] = '\0';
+		return (NULL);
 	}
 	while (buffer[0] || read(fd, buffer, BUFFER_SIZE) > 0)
 	{
@@ -50,10 +51,9 @@ int	main(void)
 		perror("Error opening file");
 		return (0);
 	}
-	line = get_next_line(fd);
-	if (line)
+	while ((line = get_next_line(fd)) != NULL)
 	{
-		printf("%s\n", line);
+		printf("%s", line);
 		free(line);
 	}
 	close(fd);
